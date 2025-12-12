@@ -1,6 +1,7 @@
 from products import Product
 
 class Store:
+    """Rrepresents all product at the sore"""
 
     def __init__(self, products):
         # Products is expected to be a list of Product instances.

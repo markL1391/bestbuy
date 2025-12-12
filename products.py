@@ -1,5 +1,5 @@
 class Product:
-"""Represents a single product in the store."""
+    """Represents a single product in the store."""
 
     def __init__(self, name, price, quantity):
         self.name = name

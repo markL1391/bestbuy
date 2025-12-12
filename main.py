@@ -1,15 +1,17 @@
 from products import Product
 from store import Store
-"""Starts the interactive store menu."""
 
 def start(store):
+    """Starts the interactive store menu."""
+
     while True:
-        print("Store Menu")
+        print("\nStore Menu")
         print("----------")
         print("1. List all products in store")
         print("2. Show total amount in store")
         print("3. Make an order")
         print("4. Quit")
+        print("----------")
 
         choice = input("Please choose a number: ")
 
