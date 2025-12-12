@@ -1,5 +1,6 @@
 from products import Product
 from store import Store
+"""Starts the interactive store menu."""
 
 def start(store):
     while True:

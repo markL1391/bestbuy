@@ -1,4 +1,5 @@
 class Product:
+"""Represents a single product in the store."""
 
     def __init__(self, name, price, quantity):
         self.name = name
@@ -63,5 +64,3 @@ class Product:
         self.active = self.quantity > 0
 
         return total_price
-
-
