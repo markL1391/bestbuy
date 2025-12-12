@@ -19,7 +19,7 @@ class Store:
         total = 0
         for product in self.products:
             total += product.get_quantity()
-            return total
+        return total
 
     def get_all_products(self):
         # Return only active products
