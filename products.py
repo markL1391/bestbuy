@@ -70,12 +70,12 @@ class Product:
         """
         return f"{self.name}, Price: {self.price}, Quantity: {self.quantity}"
 
-    def buy(self, quantity: int) -> float:
+    def buy(self, desired_quantity: int) -> float:
         """
         Buy a given quantity and return the total price.
 
         Args:
-            quantity (int): Quantity to buy.
+            desired_quantity (int): Quantity to buy.
 
         Returns:
             float: Total price for this purchase.
@@ -83,13 +83,12 @@ class Product:
         Raises:
             ValueError: if quantity is invalid or not enough stock.
         """
-        if quantity <= 0:                                # Quantity must be be positive and available.
+        if desired_quantity <= 0:                                # Quantity must be be positive and available.
             raise ValueError("Quantity must be positive.")
-        if quantity > self.quantity:
+        if desired_quantity > self.get_quantity():
             raise ValueError("Not enough quantity in stock.")
 
-        total_price = self.price * quantity              # Calculate total price for this purchase.
-        self.quantity -= quantity                        # Update quantity
-        self.active = self.quantity > 0                  # Update activation based on new stock
-
+        total_price = self.price * desired_quantity             # Calculate total price for this purchase.
+        new_quantity = self.get_quantity() - desired_quantity   # Update quantity.
+        self.set_quantity(new_quantity)                         # Update activation based on new stock.
         return total_price
