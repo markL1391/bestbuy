@@ -1,66 +1,95 @@
 class Product:
-    """Represents a single product in the store."""
+    """
+    Represents a single product in the store.
+    """
+    def __init__(self, name: str, price: float, quantity: int):
+        """
+        Create a product with validations.
 
-    def __init__(self, name, price, quantity):
+        Args:
+            name (str): Product name (non-empty).
+            price (float): Product price (>= 0).
+            quantity (int): Initial stock quantity (>=0).
+
+        Raises:
+             ValueError: If any input is invalid.
+        """
+        # Validate inputs first.
+        if not name or not str(name).strip():
+            raise ValueError("Name can not be empty.")
+        if price < 0:
+            raise ValueError("Price cannot be negative.")
+        if quantity < 0:
+            raise ValueError("Quantity cannot be negative.")
+
         self.name = name
         self.price = price
         self.quantity = quantity
-        self.active = self.quantity > 0     # Product is active if there is stock
+        self.active = self.quantity > 0         # Product is active if there is stock.
 
-        # Validate inputs
-        if not name:
-            raise Exception("Name can not be empty.")
-        if price < 0:
-            raise Exception("Price cannot be negative.")
-        if quantity < 0:
-            raise Exception("Quantity cannot be negative.")
-
-    def get_quantity(self):
-        # Return current quantity in stock
+    def get_quantity(self) -> int:
+        """
+        Return current quantity in stock
+        """
         return self.quantity
 
-    def set_quantity(self, quantity):
-        # Validate quantity
+    def set_quantity(self, quantity: int) -> None:
+        """
+        Set the product quantity and update active state.
+
+        Raises:
+            ValueError: if quantity is negative.
+        """
         if quantity < 0:
-            raise Exception("Quantity cannot be negative.")
+            raise ValueError("Quantity cannot be negative.")
 
-        # Update quantity
-        self.quantity = quantity
+        self.quantity = quantity                    # Update quantity
+        self.active = self.quantity > 0             # Update active state based on new stock
 
-        # Update active state based on new stock
-        self.active = self.quantity > 0
-
-    def is_active(self):
-        # Return whether the product is active
+    def is_active(self) -> bool:
+        """
+        Return whether the product is active.
+        """
         return self.active
 
-    def activate(self):
-        # Reactivate the product
+    def activate(self) -> None:
+        """
+        Activate the product
+        """
         self.active = True
 
-    def deactivate(self):
-        # Deactivate the product manually
+    def deactivate(self) -> None:
+        """
+        Deactivate the product manually.
+        """
         self.active = False
 
-    def show(self):
-        # Display product information
-        print(f"{self.name}, Price: {self.price}, Quantity: {self.quantity}")
+    def show(self) -> str:
+        """
+        Return a readable product string for printing.
+        """
+        return f"{self.name}, Price: {self.price}, Quantity: {self.quantity}"
 
-    def buy(self, quantity):
+    def buy(self, quantity: int) -> float:
+        """
+        Buy a given quantity and return the total price.
 
-        # Quantity must be be positive and available
-        if quantity <= 0:
-            raise Exception("Quantity must be positive.")
+        Args:
+            quantity (int): Quantity to buy.
+
+        Returns:
+            float: Total price for this purchase.
+
+        Raises:
+            ValueError: if quantity is invalid or not enough stock.
+        """
+        if quantity <= 0:                                # Quantity must be be positive and available.
+            raise ValueError("Quantity must be positive.")
         if quantity > self.quantity:
-            raise Exception("Not enough quantity in stock.")
+            raise ValueError("Not enough quantity in stock.")
 
-        # Calculate total price for this purchase
-        total_price = self.price * quantity
-
-        # Update quantity
-        self.quantity -= quantity
-
-        # Update activation based on new stock
-        self.active = self.quantity > 0
+        total_price = self.price * quantity              # Calculate total price for this purchase.
+        self.quantity -= quantity                        # Update quantity
+        self.active = self.quantity > 0                  # Update activation based on new stock
 
         return total_price
