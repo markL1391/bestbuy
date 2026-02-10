@@ -1,54 +1,63 @@
 from products import Product
 
 class Store:
-    """Rrepresents all product at the sore"""
+    """
+    Represents a store that contains all products.
+    """
 
-    def __init__(self, products):
-        # Products is expected to be a list of Product instances.
+    def __init__(self, products: list[Product]):
+        """
+        Create a store with a list of Product instances.
+        Args:
+            products (list[Product]): Initial products.
+        Raises:
+            TypeError: If products is not a list or contains non-Product items.
+        """
+        if not isinstance(products, list):
+            raise TypeError("Products must be a list of Product instances.")
+        if not all(isinstance(p, Product) for p in products):
+            raise TypeError("Products must contain only Product instances.")
+
         self.products = products
 
-    def add_product(self, product):
-        # Add a new product to the store
+    def add_product(self, product: Product) -> None:
+        """
+        Add a new product to the store.
+        """
+        if not isinstance(product, Product):
+            raise TypeError("Product must be a Product instance.")
         self.products.append(product)
 
-    def remove_product(self, product):
-        # Remove a product from the store
+    def remove_product(self, product: Product) -> None:
+        """
+        Remove a product from the store.
+        """
         self.products.remove(product)
 
-    def get_total_quantity(self):
-        # Sum the quantities of all products in the store.
-        total = 0
-        for product in self.products:
-            total += product.get_quantity()
-        return total
+    def get_total_quantity(self) -> int:
+        """
+        Returns the total quantity of all products (active or not).
+        For using only active products, filter by product.is_active().
+        """
+        return sum(product.get_quantity() for product in self.products)
 
-    def get_all_products(self):
-        # Return only active products
-        active_products = []
-        for product in self.products:
-            if product.is_active():
-                active_products.append(product)
-        return active_products
+    def get_all_products(self) -> list[Product]:
+        """
+        Return a list of active products only.
+        """
+        return [product for product in self.products if product.is_active()]
 
-    def order(self, shopping_list):
-        """shopping_list is a list of tuples: (product, quantity)"""
+    def order(self, shopping_list: list[tuple[Product, int]]) -> float:
+        """
+        Process an order.
+        Args:
+            shopping_list is a list of tuples: (product, quantity)
+        Returns:
+            float: Total order price.
+        """
         total_price = 0.0
         for product, quantity in shopping_list:
+
             # Product.buy handles validation and stock updates
             total_price += product.buy(quantity)
         return total_price
-
-
-def main():
-    product_list = [Product("MacBook Air M2", price=1450, quantity=100),
-                    Product("Bose QuietComfort Earbuds", price=250, quantity=500),
-                    Product("Google Pixel 7", price=500, quantity=250),
-                    ]
-
-    best_buy = Store(product_list)
-    products = best_buy.get_all_products()
-    print(best_buy.get_total_quantity())
-    print(best_buy.order([(products[0], 1), (products[1], 2)]))
-
-if __name__ == "__main__":
-    main()
